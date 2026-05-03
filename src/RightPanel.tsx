@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Box, Text, useStderr } from "ink";
+import type { DOMElement } from "ink";
 import { ScrollView, ScrollViewRef } from "ink-scroll-view";
-import { useMouse } from "@zenobius/ink-mouse";
+import { useMouse, useOnMouseHover } from "@zenobius/ink-mouse";
 
 export function RightPanel() {
   return (
@@ -12,26 +13,35 @@ export function RightPanel() {
 }
 
 export function RightPanel2() {
-  const scrollRef = useRef<ScrollViewRef>(null);
+  const ref = useRef<ScrollViewRef>(null);
+  const containerRef = useRef<DOMElement>(null);
   const mouse = useMouse();
   const { stdout } = useStderr();
+  const isHoveringRef = useRef(false);
 
   function handleScroll(
     position: ReturnType<typeof useMouse>["position"],
     action: ReturnType<typeof useMouse>["scroll"],
   ) {
+    if (!isHoveringRef.current) {
+      return;
+    }
     switch (action) {
       case "scrolldown":
-        scrollRef.current?.scrollBy(1);
+        ref.current?.scrollBy(1);
         break;
       case "scrollup":
-        scrollRef.current?.scrollBy(-1);
+        ref.current?.scrollBy(-1);
         break;
     }
   }
 
+  useOnMouseHover(containerRef, (isHovering: boolean) => {
+    isHoveringRef.current = isHovering;
+  });
+
   useEffect(() => {
-    const handleResize = () => scrollRef.current?.remeasure();
+    const handleResize = () => ref.current?.remeasure();
     stdout?.on("resize", handleResize);
     mouse.events.on("scroll", handleScroll);
     return () => {
@@ -41,15 +51,17 @@ export function RightPanel2() {
   }, [stdout]);
 
   return (
-    <ScrollView
-      ref={scrollRef}
-      flexGrow={1}
-      borderStyle="single"
-      flexDirection="column"
-      paddingX={1}
-    >
-      <Text bold>{getLoremIpsum()}</Text>
-    </ScrollView>
+    <Box ref={containerRef} flexDirection="row">
+      <ScrollView
+        ref={ref}
+        flexGrow={1}
+        borderStyle="single"
+        flexDirection="column"
+        paddingX={1}
+      >
+        <Text bold>{getLoremIpsum()}</Text>
+      </ScrollView>
+    </Box>
   );
 }
 
