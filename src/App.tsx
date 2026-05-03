@@ -23,7 +23,7 @@ export default function App() {
     <Box width={width} height={height} flexDirection="column">
       <NavBar />
       <Box flexDirection="row" flexGrow={1}>
-        <LeftPanel />
+        <LeftPanel width={30} />
         <Routes>
           <Route path="/" element={<RightPanel />} />
           <Route path="/page2" element={<RightPanel2 />} />

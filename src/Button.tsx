@@ -10,13 +10,7 @@ interface ButtonProps {
   marginRight?: number;
 }
 
-export default function Button({
-  label,
-  onClick,
-  height,
-  width,
-  marginRight,
-}: ButtonProps) {
+export default function Button({ label, onClick }: ButtonProps) {
   const ref = useRef(null);
 
   const [hovering, setHovering] = useState(false);
@@ -43,15 +37,7 @@ export default function Button({
   }, [clicking, hovering]);
 
   return (
-    <Box
-      gap={1}
-      paddingX={1}
-      ref={ref}
-      borderStyle={border}
-      height={height}
-      width={width}
-      marginRight={marginRight}
-    >
+    <Box gap={1} paddingX={1} ref={ref} borderStyle={border}>
       <Text>{label}</Text>
     </Box>
   );

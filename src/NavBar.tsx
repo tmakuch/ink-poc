@@ -7,7 +7,15 @@ export default function NavBar() {
   const navigate = useNavigate();
 
   return (
-    <Box borderStyle="single" height={6} flexGrow={0} flexDirection="row">
+    <Box
+      borderStyle="single"
+      height={6}
+      flexGrow={0}
+      flexShrink={0}
+      flexDirection="row"
+      alignItems="flex-start"
+      paddingRight={1}
+    >
       <Box flexGrow={1} flexDirection="column" paddingX={1}>
         <Text>Terminal App</Text>
         <Box flexDirection="row">
@@ -15,12 +23,7 @@ export default function NavBar() {
           <Button label="Page 2" onClick={() => navigate("/page2")} />
         </Box>
       </Box>
-      <Button
-        label="X"
-        height={3}
-        marginRight={1}
-        onClick={() => process.exit()}
-      />
+      <Button label="X" onClick={() => process.exit()} />
     </Box>
   );
 }
