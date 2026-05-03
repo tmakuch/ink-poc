@@ -1,9 +1,17 @@
 import React from "react";
 import { Box, Text } from "ink";
-import Button from "./Button";
 import { useNavigate } from "react-router";
+import Button from "./Button";
 
-export default function NavBar({ title }: { title: string }) {
+interface NavBarProps {
+  title: string;
+  navButtons: Array<{
+    label: string;
+    path: string;
+  }>;
+}
+
+export default function NavBar({ title, navButtons }: NavBarProps) {
   const navigate = useNavigate();
 
   return (
@@ -19,11 +27,15 @@ export default function NavBar({ title }: { title: string }) {
       <Box flexGrow={1} flexDirection="column" paddingX={1}>
         <Text>{title}</Text>
         <Box flexDirection="row">
-          <Button label="Page 1" onClick={() => navigate("/")} />
-          <Button label="Page 2" onClick={() => navigate("/page2")} />
+          {navButtons.map((meta) => (
+            <Button
+              label={meta.label}
+              onClick={() => navigate(meta.path)}
+            ></Button>
+          ))}
         </Box>
       </Box>
-      <Button label="X" onClick={() => process.exit()} />
+      <Button label="X" onClick={() => process.exit(0)} />
     </Box>
   );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { render, Box, Text, useStdout } from "ink";
+import { render } from "ink";
 import { MemoryRouter } from "react-router";
 import { MouseProvider } from "@zenobius/ink-mouse";
 

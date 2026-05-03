@@ -1,12 +1,11 @@
 import React, { useMemo, useRef, useState } from "react";
 import { Box, Text } from "ink";
-import type { BoxProps } from "ink";
 import { useOnMouseHover, useOnMouseClick } from "@zenobius/ink-mouse";
 
-interface ButtonProps extends BoxProps {
+type ButtonProps = {
   label: string;
   onClick?: () => void;
-}
+} & (typeof Box)["propTypes"];
 
 export default function Button({ label, onClick, ...props }: ButtonProps) {
   const ref = useRef(null);
@@ -35,7 +34,13 @@ export default function Button({ label, onClick, ...props }: ButtonProps) {
   }, [clicking, hovering]);
 
   return (
-    <Box gap={1} paddingX={1} ref={ref} borderStyle={border} {...props}>
+    <Box
+      gap={props.gap ?? 1}
+      paddingX={props.paddingX ?? 1}
+      ref={ref}
+      borderStyle={props.border ?? border}
+      {...props}
+    >
       <Text>{label}</Text>
     </Box>
   );

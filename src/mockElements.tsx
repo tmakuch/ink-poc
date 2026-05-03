@@ -1,8 +1,21 @@
-import React, { useRef, useEffect, useState } from "react";
-import { Box, Text, useStderr } from "ink";
-import type { DOMElement } from "ink";
-import { ScrollView, ScrollViewRef } from "ink-scroll-view";
-import { useMouse, useOnMouseHover } from "@zenobius/ink-mouse";
+import React from "react";
+import { Box, Text } from "ink";
+import { ScrollableBox } from "./ScrollableBox";
+
+export function LeftPanel() {
+  return (
+    <Box
+      flexGrow={0}
+      flexShrink={0}
+      borderStyle="single"
+      flexDirection="column"
+      paddingX={1}
+      width={30}
+    >
+      <Text bold>Left Panel</Text>
+    </Box>
+  );
+}
 
 export function RightPanel() {
   return (
@@ -13,55 +26,10 @@ export function RightPanel() {
 }
 
 export function RightPanel2() {
-  const ref = useRef<ScrollViewRef>(null);
-  const containerRef = useRef<DOMElement>(null);
-  const mouse = useMouse();
-  const { stdout } = useStderr();
-  const isHoveringRef = useRef(false);
-
-  function handleScroll(
-    position: ReturnType<typeof useMouse>["position"],
-    action: ReturnType<typeof useMouse>["scroll"],
-  ) {
-    if (!isHoveringRef.current) {
-      return;
-    }
-    switch (action) {
-      case "scrolldown":
-        ref.current?.scrollBy(1);
-        break;
-      case "scrollup":
-        ref.current?.scrollBy(-1);
-        break;
-    }
-  }
-
-  useOnMouseHover(containerRef, (isHovering: boolean) => {
-    isHoveringRef.current = isHovering;
-  });
-
-  useEffect(() => {
-    const handleResize = () => ref.current?.remeasure();
-    stdout?.on("resize", handleResize);
-    mouse.events.on("scroll", handleScroll);
-    return () => {
-      stdout?.off("resize", handleResize);
-      mouse.events.off("scroll", handleScroll);
-    };
-  }, [stdout]);
-
   return (
-    <Box ref={containerRef} flexDirection="row">
-      <ScrollView
-        ref={ref}
-        flexGrow={1}
-        borderStyle="single"
-        flexDirection="column"
-        paddingX={1}
-      >
-        <Text bold>{getLoremIpsum()}</Text>
-      </ScrollView>
-    </Box>
+    <ScrollableBox>
+      <Text bold>{getLoremIpsum()}</Text>
+    </ScrollableBox>
   );
 }
 
