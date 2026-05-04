@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.jsx",
   "scripts": {
-    "start": "cross-env DEV=true tsx --inspect index.jsx",
-    "build": "node build.mjs"
+    "start": "cross-env DEV=true tsx --inspect ./example/index.jsx",
+    "build-example": "node example/build.mjs"
   },
   "keywords": [],
   "author": "",

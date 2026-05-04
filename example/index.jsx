@@ -3,7 +3,7 @@ import { render } from "ink";
 import { MemoryRouter } from "react-router";
 import { MouseProvider } from "@zenobius/ink-mouse";
 
-import App from "./example/App.tsx";
+import App from "./App";
 
 const ALT_SCREEN_ENTER = "\x1b[?1049h";
 const ALT_SCREEN_EXIT = "\x1b[?1049l";

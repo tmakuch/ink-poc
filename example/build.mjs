@@ -8,11 +8,11 @@ import {
   rmSync,
   writeFileSync,
 } from "fs";
-import { dirname, join } from "path";
+import { dirname, join, resolve } from "path";
 import { fileURLToPath } from "url";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const dist = join(__dirname, "dist");
+const __root = resolve(join(dirname(fileURLToPath(import.meta.url)), ".."));
+const dist = join(__root, "dist/example");
 const isWin = process.platform === "win32";
 const appName = "terminal";
 const exe = isWin ? `${appName}.exe` : appName;
@@ -38,7 +38,7 @@ const stubOptionalModules = {
 
 console.log("\n> Bundle with esbuild");
 await esbuild.build({
-  entryPoints: ["index.jsx"],
+  entryPoints: ["./example/index.jsx"],
   bundle: true,
   platform: "node",
   format: "esm",
@@ -66,8 +66,8 @@ writeFileSync(
   join(dist, "sea-config.json"),
   JSON.stringify(
     {
-      main: "dist/bundle.cjs",
-      output: "dist/sea-prep.blob",
+      main: join(dist, "bundle.cjs"),
+      output: join(dist, "sea-prep.blob"),
       disableExperimentalSEAWarning: true,
     },
     null,
@@ -76,7 +76,7 @@ writeFileSync(
 );
 
 console.log("\n> Generate SEA blob");
-execSync("node --experimental-sea-config dist/sea-config.json", {
+execSync(`node --experimental-sea-config ${join(dist, "sea-config.json")}`, {
   stdio: "inherit",
 });
 
@@ -86,14 +86,14 @@ copyFileSync(process.execPath, outExe);
 console.log(`\n> Inject blob into ${exe}`);
 const FUSE = "NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2";
 const postject = join(
-  __dirname,
+  __root,
   "node_modules",
   ".bin",
   isWin ? "postject.cmd" : "postject",
 );
 execSync(
-  `"${postject}" "${outExe}" NODE_SEA_BLOB dist/sea-prep.blob --sentinel-fuse ${FUSE}`,
+  `"${postject}" "${outExe}" NODE_SEA_BLOB ${join(dist, "sea-prep.blob")} --sentinel-fuse ${FUSE}`,
   { stdio: "inherit" },
 );
 
-console.log(`\nDone — dist/${exe}`);
+console.log(`\nDone — ${join(dist, exe)}`);

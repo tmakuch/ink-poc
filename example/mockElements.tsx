@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Text } from "ink";
-import ScrollableBox from "./components/ScrollableBox";
-import TextInput from "./components/TextInput";
+import ScrollableBox from "../src/ScrollableBox";
+import TextInput from "../src/TextInput";
 
 export function LeftPanel() {
   return (
