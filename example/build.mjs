@@ -38,7 +38,7 @@ const stubOptionalModules = {
 
 console.log("\n> Bundle with esbuild");
 await esbuild.build({
-  entryPoints: ["./example/index.jsx"],
+  entryPoints: ["./example/index.tsx"],
   bundle: true,
   platform: "node",
   format: "esm",

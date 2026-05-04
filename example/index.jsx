@@ -2,25 +2,16 @@ import React from "react";
 import { render } from "ink";
 import { MemoryRouter } from "react-router";
 import { MouseProvider } from "@zenobius/ink-mouse";
-
 import App from "./App";
+import { enterFullscreen, exitFullscreen } from "../index.tsx";
 
-const ALT_SCREEN_ENTER = "\x1b[?1049h";
-const ALT_SCREEN_EXIT = "\x1b[?1049l";
-const CURSOR_HIDE = "\x1b[?25l";
-const CURSOR_SHOW = "\x1b[?25h";
-
-process.stdout.write(ALT_SCREEN_ENTER);
-process.stdout.write(CURSOR_HIDE);
+enterFullscreen();
 
 if (process.env.DEV?.toLowerCase() === "true") {
   process.on("exit", () => {
-    process.stdout.write(CURSOR_SHOW);
-    process.stdout.write(ALT_SCREEN_EXIT);
+    exitFullscreen();
   });
 }
-process.on("SIGINT", () => process.exit(0));
-process.on("SIGTERM", () => process.exit(0));
 
 const { waitUntilExit } = render(
   <MouseProvider>

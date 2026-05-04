@@ -2,16 +2,21 @@
   "name": "terminal",
   "version": "1.0.0",
   "description": "",
-  "main": "index.jsx",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "scripts": {
     "start": "cross-env DEV=true tsx --inspect ./example/index.jsx",
-    "build-example": "node example/build.mjs"
+    "build": "esbuild index.tsx --bundle --platform=node --format=esm --jsx=automatic --external:react --external:ink --external:ink-scroll-view --external:@zenobius/ink-mouse --external:react-router --outfile=dist/index.js",
+    "build-example": "node example/build.mjs",
+    "prepare": "npm run build"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "type": "module",
-  "dependencies": {
+  "peerDependencies": {
     "@zenobius/ink-mouse": "^1.0.3",
     "ink": "^7.0.1",
     "ink-scroll-view": "^0.3.6",
@@ -19,10 +24,15 @@
     "react-router": "^7.14.2"
   },
   "devDependencies": {
+    "@zenobius/ink-mouse": "^1.0.3",
     "cross-env": "^10.1.0",
     "esbuild": "^0.25.0",
+    "ink": "^7.0.1",
+    "ink-scroll-view": "^0.3.6",
     "postject": "^1.0.0-alpha.6",
+    "react": "^19.2.5",
     "react-devtools-core": "^7.0.1",
+    "react-router": "^7.14.2",
     "tsx": "^4.19.3",
     "prettier": "^3.8.3"
   }
